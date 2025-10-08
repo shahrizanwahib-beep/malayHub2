@@ -458,7 +458,7 @@
             modal.dataset.assignment = assignment;
             
             const subtitle = document.getElementById('uploadModalSubtitle');
-            subtitle.textContent = `Sila muat naik fail untuk ${assignment}.`;
+            subtitle.textContent = `Sila muat naik fail untuk ${assignment}. (Max 2MB)`;
             subtitle.classList.remove('text-red-500');
             subtitle.classList.add('text-slate-600');
 
@@ -504,10 +504,12 @@
 
                 if (!studentClassId || !currentUser) {
                      console.error("Student not logged in correctly.");
+                     subtitle.textContent = "Error: Not logged in correctly. Please refresh.";
+                     subtitle.classList.add('text-red-500');
                     return;
                 }
 
-                subtitle.textContent = `Sila muat naik fail untuk ${assignment}.`;
+                subtitle.textContent = `Sila muat naik fail untuk ${assignment}. (Max 2MB)`;
                 subtitle.classList.remove('text-red-500');
                 
                 uploadBtn.disabled = true;
@@ -535,6 +537,8 @@
                     (error) => {
                         console.error("Upload failed:", error);
                         if (submissionRef) updateDoc(submissionRef, { status: 'Upload Failed' });
+                        subtitle.textContent = `Upload failed: ${error.code}. Please try again.`;
+                        subtitle.classList.add('text-red-500');
                         uploadBtn.disabled = false;
                         progressContainer.classList.add('hidden');
                     }, 
@@ -551,6 +555,8 @@
             } catch (error) {
                 console.error("An error occurred during submission:", error);
                 if (submissionRef) await updateDoc(submissionRef, { status: 'Upload Failed' });
+                subtitle.textContent = "An unexpected error occurred. Please try again.";
+                subtitle.classList.add('text-red-500');
                 uploadBtn.disabled = false;
                 progressContainer.classList.add('hidden');
             }
@@ -830,5 +836,5 @@
     </script>
 </body>
 </html>
-
+" and the user is asking the following query: "I have a problem with the file size limit, it doesn't seem to work, can you add a message that tells them the file size and the max file size?"
 
